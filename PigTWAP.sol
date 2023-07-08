@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: MIT
 // File: @uniswap/v2-periphery/contracts/libraries/SafeMath.sol
 
-pragma solidity =0.6.6;
+pragma solidity 0.6.6;
 
 // a library for performing overflow-safe math, courtesy of DappHub (https://github.com/dapphub/ds-math)
 
@@ -20,9 +20,6 @@ library SafeMath {
 }
 
 // File: @uniswap/lib/contracts/libraries/BitMath.sol
-
-
-pragma solidity >=0.5.0;
 
 library BitMath {
     // returns the 0 indexed position of the most significant bit of the input x
@@ -108,11 +105,6 @@ library BitMath {
 }
 
 // File: @uniswap/lib/contracts/libraries/Babylonian.sol
-
-
-
-pragma solidity >=0.4.0;
-
 // computes square roots using the babylonian method
 // https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Babylonian_method
 library Babylonian {
@@ -165,9 +157,6 @@ library Babylonian {
 
 // File: @uniswap/lib/contracts/libraries/FullMath.sol
 
-
-pragma solidity >=0.4.0;
-
 // taken from https://medium.com/coinmonks/math-in-solidity-part-3-percents-and-proportions-4db014e080b1
 // license is CC-BY-4.0
 library FullMath {
@@ -218,13 +207,6 @@ library FullMath {
 }
 
 // File: @uniswap/lib/contracts/libraries/FixedPoint.sol
-
-
-pragma solidity >=0.4.0;
-
-
-
-
 // a library for handling binary fixed point numbers (https://en.wikipedia.org/wiki/Q_(number_format))
 library FixedPoint {
     // range: [0, 2**112 - 1]
@@ -367,8 +349,6 @@ library FixedPoint {
 
 // File: @uniswap/v2-core/contracts/interfaces/IUniswapV2Pair.sol
 
-pragma solidity >=0.5.0;
-
 interface IUniswapV2Pair {
     event Approval(address indexed owner, address indexed spender, uint value);
     event Transfer(address indexed from, address indexed to, uint value);
@@ -421,10 +401,6 @@ interface IUniswapV2Pair {
 }
 
 // File: @uniswap/v2-periphery/contracts/libraries/UniswapV2Library.sol
-
-pragma solidity >=0.5.0;
-
-
 
 library UniswapV2Library {
     using SafeMath for uint;
@@ -504,11 +480,6 @@ library UniswapV2Library {
 }
 
 // File: @uniswap/v2-periphery/contracts/libraries/UniswapV2OracleLibrary.sol
-
-pragma solidity >=0.5.0;
-
-
-
 // library with helper methods for oracles that are concerned with computing average prices
 library UniswapV2OracleLibrary {
     using FixedPoint for *;
@@ -540,10 +511,6 @@ library UniswapV2OracleLibrary {
     }
 }
 
-
-pragma solidity 0.6.6;
-// NOTE: using solidity 0.6.6 to match imports
-
 contract TWAP {
     using FixedPoint for *;
 
@@ -555,7 +522,7 @@ contract TWAP {
     uint public price1CumulativeLast;
     uint32 public blockTimestampLast;
 
-    uint multiplier = 1*10**18; // TWAP per single token
+    uint constant multiplier = 1*10**18; // TWAP per single token
 
     address auth;
 
