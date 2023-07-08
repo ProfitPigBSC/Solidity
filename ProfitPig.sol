@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity 0.8.20;
 
 // This version of SafeMath should only be used with Solidity 0.8 or later,
 // because it relies on the compiler's built in overflow checks.
@@ -1024,16 +1024,17 @@ contract ProfitPIG is IERC20Extended, Auth {
     address public pair;
 
     bool feesActive;
+    bool isTWAPSet;
 
-    uint256 public liquidityFee = 4; 
-    uint256 public buybackFee = 4; 
-    uint256 public reflectionFee = 4; 
-    uint256 public totalFee = 12;
-    uint256 public feeDenominator = 100; 
+    uint256 public constant liquidityFee = 4; 
+    uint256 public constant buybackFee = 4; 
+    uint256 public constant reflectionFee = 4; 
+    uint256 public constant totalFee = 12;
+    uint256 public constant feeDenominator = 100; 
 
     uint256 public liquidityBNBAccumulator; 
     uint256 public autoBuybackAccumulator;
-    uint256 public minBuybackThreshold = 2 * 10 ** 18; // 2 BNB
+    uint256 public constant minBuybackThreshold = 2 * 10 ** 18; // 2 BNB
 
     DividendDistributor public distributor;
 
@@ -1054,6 +1055,9 @@ contract ProfitPIG is IERC20Extended, Auth {
     event LiquidityIncrease(uint256 amountBNB, uint256 amountToken);
     event BuybackAndBurn(uint256 amountBNB);
     event ReflectionDeposit(uint256 amountBNB);
+    event TWAPSet(address twapContract);
+    event FeesActivated(uint256 datetime);
+    event HolderExemption(address exempted);
 
     bool inSwap;
     modifier swapping() {
@@ -1102,11 +1106,15 @@ contract ProfitPIG is IERC20Extended, Auth {
     receive() external payable {}
 
     function setTWAP(address _twap) external onlyOwner {
+        require(!isTWAPSet, "TWAP already initialized");
         TWAP = _twap;
+        isTWAPSet = true;
+        emit TWAPSet(_twap);
     }
 
     function activateFees() external onlyOwner {
         feesActive = true;
+        emit FeesActivated(block.timestamp);
     }
 
     function totalSupply() external view override returns (uint256) {
@@ -1373,6 +1381,7 @@ contract ProfitPIG is IERC20Extended, Auth {
 
     function setIsFeeExempt(address holder) external authorized {
         isFeeExempt[holder] = true;
+        emit HolderExemption(holder);
     }
 
     function getCirculatingSupply() public view returns (uint256) {
