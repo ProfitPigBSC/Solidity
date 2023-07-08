@@ -1031,6 +1031,7 @@ contract ProfitPIG is IERC20Extended, Auth {
     uint256 public totalFee = 12;
     uint256 public feeDenominator = 100; 
 
+    uint256 public liquidityBNBAccumulator; 
     uint256 public autoBuybackAccumulator;
     uint256 public minBuybackThreshold = 2 * 10 ** 18; // 2 BNB
 
@@ -1126,6 +1127,10 @@ contract ProfitPIG is IERC20Extended, Auth {
 
     function balanceOf(address account) public view override returns (uint256) {
         return _balances[account];
+    }
+
+    function rewardsDistributed() external  view returns (uint256) {
+        return distributor.totalDistributed();
     }
 
     function allowance(address holder, address spender)
@@ -1325,6 +1330,7 @@ contract ProfitPIG is IERC20Extended, Auth {
                 DEAD,
                 block.timestamp
             );
+        liquidityBNBAccumulator = liquidityBNBAccumulator.add(amountB);
         emit LiquidityIncrease(amountB, amountT);
     }
 
